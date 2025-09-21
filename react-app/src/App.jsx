@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {genres} from '../data.js'
+import { genres } from './data.js'
 import './styles.css'
 
 function App() {
