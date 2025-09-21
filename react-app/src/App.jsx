@@ -44,7 +44,7 @@ function App() {
 
   }
 
-  fetchPodcasts()
+  fetchPodcasts()  
  }, [])
 
   return (
@@ -53,7 +53,11 @@ function App() {
         <h1>🎙️ Podcast App</h1>
       </header>
       <main className="grid">
-        <p>Podcast app</p>
+        {loading && <p className="loading">Loading podcasts...</p>}
+        {error && <p className="error-message">Error: {error} </p>}
+        {!loading && !error && podcasts.map(podcast => (
+          // Render podcast card
+        ))}
       </main>
     </div>
   )
