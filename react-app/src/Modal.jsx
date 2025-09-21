@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { genres } from './data.js';
 
 const Modal = ({ podcast, onClose }) => {
+  const [detailedPodcast, setDetailedPodcast] = useState(null);
+
   if (!podcast) return null;
+
+  // Fetch detailed podcast data including seasons
+  useEffect(() => {
+    const fetchPodcastDetails = async () => {
+      try {
+        const response = await fetch(`https://podcast-api.netlify.app/id/${podcast.id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setDetailedPodcast(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch podcast details:', err);
+      }
+    };
+
+    fetchPodcastDetails();
+  }, [podcast.id]);
 
   // Handle backdrop click to close modal
   const handleBackdropClick = (e) => {
@@ -29,6 +48,42 @@ const Modal = ({ podcast, onClose }) => {
         <button className="close-btn" onClick={onClose}>
           ×
         </button>
+        
+        {/* Podcast Content */}
+        {detailedPodcast ? (
+          <div className="banner">
+            <img 
+              src={detailedPodcast.image} 
+              alt={detailedPodcast.title} 
+              className="modal-img"
+            />
+            
+            <div className="info-section">
+              <div className="title-section">
+                <h2>{detailedPodcast.title}</h2>
+              </div>
+              <p>{detailedPodcast.description}</p>
+              
+              <div className="tags">
+                {detailedPodcast.genres.map(genreId => {
+                  const genre = genres.find(g => g.id === genreId);
+                  return (
+                    <span key={genreId} className="tag">
+                      {genre ? genre.title : 'Unknown'}
+                    </span>
+                  );
+                })}
+              </div>
+              
+              <p className="modal-updated-text">
+                <strong>Seasons:</strong> {detailedPodcast.seasons.length} | 
+                <strong> Last Updated:</strong> {new Date(detailedPodcast.updated).toLocaleDateString()}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="loading">Loading...</div>
+        )}
       </div>
     </div>
   );
