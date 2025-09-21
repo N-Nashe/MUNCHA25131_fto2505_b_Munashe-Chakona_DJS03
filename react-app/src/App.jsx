@@ -63,9 +63,15 @@ function App() {
             src={podcast.image}
             alt={podcast.title}
             className="card-image"
-            
             />
-          </div>
+            <div className="card-content">
+              <h2 className="card-title">{podcast.title}</h2>
+              <p className="card-seasons">{podcast.seasons} Season{podcast.seasons !== 1 ? 's' : ''}</p>
+              <p className="card-genres">{getGenreNames(podcast.genres)}</p>
+              <p className="card-date">Updated: {formatDate(podcast.updated)}</p>
+            </div>
+              
+            </div>
           
         ))}
       </main>
