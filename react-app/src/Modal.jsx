@@ -51,36 +51,38 @@ const Modal = ({ podcast, onClose }) => {
         
         {/* Podcast Content */}
         {detailedPodcast ? (
-          <div className="banner">
-            <img 
-              src={detailedPodcast.image} 
-              alt={detailedPodcast.title} 
-              className="modal-img"
-            />
-            
-            <div className="info-section">
-              <div className="title-section">
+          <>
+            <div className="banner">
+              <img src={detailedPodcast.image} alt={detailedPodcast.title} className="modal-img" />
+              <div className="info-section">
                 <h2>{detailedPodcast.title}</h2>
-              </div>
-              <p>{detailedPodcast.description}</p>
-              
-              <div className="tags">
-                {detailedPodcast.genres.map(genreId => {
-                  const genre = genres.find(g => g.id === genreId);
-                  return (
+                <p>{detailedPodcast.description}</p>
+                <div className="tags">
+                  {detailedPodcast.genres.map(genreId => (
                     <span key={genreId} className="tag">
-                      {genre ? genre.title : 'Unknown'}
+                      {genres.find(g => g.id === genreId)?.title || 'Unknown'}
                     </span>
-                  );
-                })}
+                  ))}
+                </div>
+                <p className="modal-updated-text">
+                  <strong>Seasons:</strong> {detailedPodcast.seasons.length} | 
+                  <strong> Last Updated:</strong> {new Date(detailedPodcast.updated).toLocaleDateString()}
+                </p>
               </div>
-              
-              <p className="modal-updated-text">
-                <strong>Seasons:</strong> {detailedPodcast.seasons.length} | 
-                <strong> Last Updated:</strong> {new Date(detailedPodcast.updated).toLocaleDateString()}
-              </p>
             </div>
-          </div>
+            
+            <div className="seasons-section">
+              <h3>Seasons</h3>
+              <ul className="season-list">
+                {detailedPodcast.seasons.map((season, index) => (
+                  <li key={`season-${season.season}-${index}`} className="season-item">
+                    <h4 className="season-title">Season {season.season}: {season.title}</h4>
+                    <p className="episodes">{season.episodes.length} episodes</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
         ) : (
           <div className="loading">Loading...</div>
         )}
