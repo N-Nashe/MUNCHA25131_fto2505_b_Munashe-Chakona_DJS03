@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import { genres } from './data.js'
+import Modal from './Modal.jsx'
 import './styles.css'
 
 function App() {
   
   const [podcasts, setPodcasts] = useState([])        
   const [loading, setLoading] = useState(true)        
-  const [error, setError] = useState(null)  
+  const [error, setError] = useState(null)
+  const [selectedPodcast, setSelectedPodcast] = useState(null)
+
+  // Function to handle card clicks (for modal)
+  const handleCardClick = (podcast) => {
+    setSelectedPodcast(podcast)
+  }
+
+  // Function to close modal
+  const closeModal = () => {
+    setSelectedPodcast(null)
+  }
   
   const getGenreNames = (genreIds) => {
     return genreIds.map(id => {
@@ -56,7 +68,12 @@ function App() {
         {error && <p className="error-message">Error: {error} </p>}
         {!loading && !error && podcasts.map(podcast => (
           // Render podcast card
-          <div key={podcast.id} className="card">
+          <div 
+            key={podcast.id} 
+            className="card"
+            onClick={() => handleCardClick(podcast)}
+            style={{ cursor: 'pointer' }}
+          >
             <img
               src={podcast.image}
               alt={podcast.title}
@@ -71,6 +88,14 @@ function App() {
           </div>
         ))}
       </main>
+      
+      {/* Modal */}
+      {selectedPodcast && (
+        <Modal 
+          podcast={selectedPodcast} 
+          onClose={closeModal} 
+        />
+      )}
     </div>
   )
 }

@@ -199,11 +199,18 @@ body {
   font-size: 2rem;
   cursor: pointer;
   transition: transform 0.3s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 }
 
 .close-btn:hover {
+  background: #f0f0f0;
   color: red;
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .hidden {
