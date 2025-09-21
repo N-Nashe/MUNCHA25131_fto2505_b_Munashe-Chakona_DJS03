@@ -57,6 +57,16 @@ function App() {
         {error && <p className="error-message">Error: {error} </p>}
         {!loading && !error && podcasts.map(podcast => (
           // Render podcast card
+          <div key ={podcast.id} className="card">
+
+            <img
+            src={podcast.image}
+            alt={podcast.title}
+            className="card-image"
+            
+            />
+          </div>
+          
         ))}
       </main>
     </div>
