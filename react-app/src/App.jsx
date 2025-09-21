@@ -25,27 +25,26 @@ function App() {
   }
   
   useEffect(() => {
- const fetchPodcasts = async () => {
-    
-  try{
-    const response = await fetch ('https://podcast-api.netlify.app/')
-    
-    if (!response.ok){
-      throw new Error('Failed to load podcasts!')
+    const fetchPodcasts = async () => {
+      
+      try{
+        const response = await fetch ('https://podcast-api.netlify.app/')
+        
+        if (!response.ok){
+          throw new Error('Failed to load podcasts!')
+        }
+        const data = await response.json()
+        setPodcasts(data)
+      } catch (error){
+        setError(error.message)
+
+      } finally{
+        setLoading(false);
+      }
     }
-    const data = await response.json()
-    setPodcasts(data)
-  } catch (error){
-    setError(error.message)
 
-  } finally{
-    setLoading(false);
-  }
-
-  }
-
-  fetchPodcasts()  
- }, [])
+    fetchPodcasts()  
+  }, [])
 
   return (
     <div>
@@ -57,12 +56,11 @@ function App() {
         {error && <p className="error-message">Error: {error} </p>}
         {!loading && !error && podcasts.map(podcast => (
           // Render podcast card
-          <div key ={podcast.id} className="card">
-
+          <div key={podcast.id} className="card">
             <img
-            src={podcast.image}
-            alt={podcast.title}
-            className="card-image"
+              src={podcast.image}
+              alt={podcast.title}
+              className="card-image"
             />
             <div className="card-content">
               <h2 className="card-title">{podcast.title}</h2>
@@ -70,9 +68,7 @@ function App() {
               <p className="card-genres">{getGenreNames(podcast.genres)}</p>
               <p className="card-date">Updated: {formatDate(podcast.updated)}</p>
             </div>
-              
-            </div>
-          
+          </div>
         ))}
       </main>
     </div>
